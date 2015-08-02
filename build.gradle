@@ -1,0 +1,59 @@
+group 'net.devkhan.spring'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    jcenter()
+    maven {
+        url "http://nexus.dev-khan.net/content/groups/public/"
+    }
+}
+
+ext {
+    ver = [
+            java : 1.8,
+            spring : "4.1.7.RELEASE",
+            springJpa : "1.8.1.RELEASE",
+            hibernate : "4.3.10.Final",
+            queryDsl : "3.6.5",
+            springSecurity : "4.0.1.RELEASE"
+    ]
+    queryDsl = [
+            library: "com.mysema.querydsl:querydsl-apt:$ver.queryDsl",
+            hibernate: true
+    ]
+}
+
+dependencies {
+    compile "com.google.guava:guava:18.0"
+    compile "org.slf4j:slf4j-api:1.7.5"
+    compile "org.apache.commons:commons-lang3:3.4"
+
+    compile("org.springframework:spring-orm:$ver.spring")
+    compile("org.springframework.data:spring-data-jpa:$ver.springJpa")
+
+    compile("com.h2database:h2:1.4.187")
+
+    compile("org.hibernate:hibernate-core:$ver.hibernate")
+    compile("org.hibernate:hibernate-entitymanager:$ver.hibernate")
+
+    compile("org.hibernate:hibernate-hikaricp:$ver.hibernate")
+
+    testCompile("junit:junit:4.12")
+    testCompile("org.springframework:spring-test:$ver.spring")
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+// source code encoding
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+configurations {
+    provided
+}
+sourceSets {
+    main { compileClasspath += configurations.provided }
+}
